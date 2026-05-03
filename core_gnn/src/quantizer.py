@@ -1,3 +1,5 @@
+from xml.parsers.expat import model
+
 import torch
 import numpy as np
 
@@ -29,6 +31,25 @@ class BioGraphQuantizer:
         
         # Structure: [Scale(4 bytes)][Weights(...)]
         return scale_data + weight_data
+    
+    def load_model(model_path):
+        """
+        Deterministic loader for Edge-GNN models. 
+        Maps weights to CPU to simulate edge-native execution on the AVITA hardware.
+        """
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Model not found: {model_path}")
+        
+        # Using torch.jit.load for TorchScript-optimized models (common in Edge-GNN)
+        # If using standard weights, use torch.load(model_path, map_location='cpu')
+        try:
+            model = torch.jit.load(model_path, map_location=torch.device('cpu'))
+        except Exception:
+            # Fallback for standard state_dict models if needed
+            model = torch.load(model_path, map_location=torch.device('cpu'))
+            
+        model.eval()
+        return model
 
 # Architectural Baseline for BioGraph-Edge-Quantizer
 if __name__ == "__main__":

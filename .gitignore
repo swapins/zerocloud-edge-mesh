@@ -24,3 +24,8 @@ core-gnn/models/*.bin
 # Shared / Protos
 shared/protos/*.php
 shared/protos/*.py
+core_gnn/models/
+core_gnn/data/
+core_gnn/benchmarks/
+**/__pycache__/
+*.pyc
