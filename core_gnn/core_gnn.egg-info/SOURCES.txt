@@ -1,0 +1,12 @@
+setup.py
+core_gnn.egg-info/PKG-INFO
+core_gnn.egg-info/SOURCES.txt
+core_gnn.egg-info/dependency_links.txt
+core_gnn.egg-info/top_level.txt
+src/__init__.py
+src/mesh_client.py
+src/mesh_server.py
+src/mesh_v1_pb2.py
+src/mesh_v1_pb2_grpc.py
+src/quantizer.py
+tests/test_quantization.py
