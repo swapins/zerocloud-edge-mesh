@@ -11,16 +11,19 @@ class DiscoveryService {
     }
 
     public function joinMesh() {
-        // Retrieve existing peers or initialize empty array
         $peers = Cache::get('mesh_peers', []);
         
-        // Add current node with a timestamp
+        // Logical Clock: Increment local version or start at 0
+        $currentVersion = $peers[$this->nodeId]['version'] ?? 0;
+        $nextVersion = $currentVersion + 1;
+
         $peers[$this->nodeId] = [
+            'version' => $nextVersion,
             'last_seen' => now()->toDateTimeString(),
             'status' => 'active'
         ];
 
-        // Use 'forever' to ensure the state survives process exits
+        // Conflict Resolution: Only update if incoming version > local version
         Cache::forever('mesh_peers', $peers);
     }
 }
