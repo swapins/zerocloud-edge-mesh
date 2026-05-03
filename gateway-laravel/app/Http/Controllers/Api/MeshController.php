@@ -29,4 +29,24 @@ class MeshController extends Controller
 
         return response()->json(['status' => 'rejected'], 400);
     }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'node_id' => 'required|string',
+            'endpoint' => 'required|url',
+        ]);
+
+        $peers = Cache::get('mesh_peers', []);
+        $peers[$request->node_id] = [
+            'endpoint' => $request->endpoint,
+            'last_seen' => now()->timestamp
+        ];
+        Cache::put('mesh_peers', $peers, now()->addMinutes(30));
+
+        return response()->json([
+            'status' => 'registered',
+            'peers' => $peers
+        ]);
+    }
 }

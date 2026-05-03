@@ -4,11 +4,8 @@ namespace App\Services\Clinical;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
-/**
- * Handles decentralized peer discovery for ZeroCloud-Edge-Mesh.
- * Aligns with Patent No. 202541127477 for decentralized intelligence.
- */
 class DiscoveryService
 {
     protected string $nodeId;
@@ -16,29 +13,48 @@ class DiscoveryService
 
     public function __construct()
     {
-        $this->nodeId = config('app.node_id', 'edge-node-' . uniqid());
+        $this->nodeId = config('mesh.node_id');
         $this->seeds = config('mesh.seeds', []);
     }
 
     /**
-     * Broadcasts presence to seed nodes to join the mesh.
+     * Join the mesh by announcing to seed nodes.
+     * Aligns with the P2P embedding synchronization goal.
      */
-    public function announce(): void
+    public function joinMesh(): void
     {
         foreach ($this->seeds as $seed) {
-            Http::post("$seed/api/v1/mesh/register", [
-                'node_id' => $this->nodeId,
-                'endpoint' => config('app.url'),
-                'timestamp' => now()->timestamp,
-            ]);
+            try {
+                $response = Http::timeout(3)->post("$seed/api/v1/mesh/register", [
+                    'node_id' => $this->nodeId,
+                    'endpoint' => config('app.url'),
+                ]);
+
+                if ($response->successful()) {
+                    $this->updatePeerList($response->json('peers', []));
+                }
+            } catch (\Exception $e) {
+                Log::warning("Seed node unreachable: {$seed}");
+            }
         }
     }
 
     /**
-     * Retrieves active peers for embedding synchronization.
+     * Updates the deterministic peer registry in the local cache.
      */
-    public function getActivePeers(): array
+    protected function updatePeerList(array $newPeers): void
     {
-        return Cache::get('mesh_peers', []);
+        $peers = Cache::get('mesh_peers', []);
+        
+        foreach ($newPeers as $id => $endpoint) {
+            if ($id !== $this->nodeId) {
+                $peers[$id] = [
+                    'endpoint' => $endpoint,
+                    'last_seen' => now()->timestamp
+                ];
+            }
+        }
+
+        Cache::put('mesh_peers', $peers, now()->addMinutes(30));
     }
 }
