@@ -16,11 +16,13 @@
 ![Quantization](https://img.shields.io/badge/quantization-INT8-orange)
 ![Reproducibility](https://img.shields.io/badge/reproducibility-deterministic-success)
 ![Patent](https://img.shields.io/badge/IP-202541127477-critical)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20002508.svg)](https://doi.org/10.5281/zenodo.20002508)
 
 
 ## Project Nature: Preclinical Coordination Prototype
 
 ZeroCloud-Edge-Mesh is a **local-first state-synchronization prototype** designed for edge-native biological research. It serves as a functional proof-of-concept for running **Edge-GNN** (Graph Neural Network) inference on resource-constrained hardware without external data exfiltration.
+
 
 **Definition:** Edge-GNN refers to GraphSAGE inference executed on resource-constrained edge devices.
 
@@ -28,7 +30,8 @@ ZeroCloud-Edge-Mesh is a **local-first state-synchronization prototype** designe
 
 - **Target Scope:** A peer-to-peer (P2P) registry and weight sync layer designed for asynchronous coordination  
 - **Specific Use-Case:** Optimized for **DNA sequence interaction modeling** and motif scanning  
-- **Guarantees:** Provides **Causally Ordered Event Logging** via Lamport Clocks and **Deterministic Local Persistence** via SQLite WAL  
+- **Guarantees:** Provides **Causally Ordered Event Logging** via Lamport Clocks and **Deterministic Local Persistence** via SQLite WAL
+
 
 ## Example Flow
 
