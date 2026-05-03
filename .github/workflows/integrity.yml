@@ -1,0 +1,14 @@
+name: Clinical-Integrity-Gate
+on: [push, pull_request]
+
+jobs:
+  validate-gateway:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: Syntax Check (Lint)
+        run: find gateway-laravel/app -name "*.php" -exec php -l {} \;
