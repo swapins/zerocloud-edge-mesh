@@ -1,0 +1,26 @@
+# System & IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Laravel 12 Specifics
+gateway-laravel/vendor/
+gateway-laravel/.env
+gateway-laravel/storage/*.key
+gateway-laravel/public/storage
+gateway-laravel/public/hot
+gateway-laravel/node_modules/
+
+# Python / core-gnn Specifics
+core-gnn/__pycache__/
+core-gnn/venv/
+core-gnn/*.py[cod]
+core-gnn/.env
+core-gnn/data/raw/
+core-gnn/models/*.pt
+core-gnn/models/*.bin
+
+# Shared / Protos
+shared/protos/*.php
+shared/protos/*.py

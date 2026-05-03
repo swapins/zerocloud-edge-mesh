@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package zerocloud.edge.v1;
+
+// PHP Namespace for Laravel 12 integration
+option php_namespace = "App\\Grpc\\EdgeMesh";
+option php_metadata_namespace = "App\\Grpc\\Metadata";
+
+/**
+ * BioGraph P2P Exchange Service
+ * Aligned with Indian Patent No. 202541127477
+ */
+service EdgeMeshService {
+    // Exchange quantized embeddings between peer nodes
+    rpc SyncPeerEmbeddings(EmbeddingStream) returns (AuditAcknowledgment);
+}
+
+message EmbeddingStream {
+    string node_id = 1;          // Unique identifier of the sending node
+    string protocol_version = 2; // Sync with VERSION file
+    bytes payload = 3;           // The 16MB INT8 packed weights
+    uint64 checksum = 4;         // For deterministic integrity checks
+}
+
+message AuditAcknowledgment {
+    string receipt_id = 1;       // ID for the clinical audit trail
+    bool verified = 2;
+    int64 timestamp = 3;
+}

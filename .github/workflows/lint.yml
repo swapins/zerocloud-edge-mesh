@@ -1,0 +1,9 @@
+name: Clinical Integrity Lint
+on: [push]
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP Syntax Check
+        run: find gateway-laravel/app -name "*.php" -exec php -l {} \;

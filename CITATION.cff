@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Vidya"
+    given-names: "Swapin"
+    orcid: "https://orcid.org/0009-0009-5758-3845"
+title: "ZeroCloud-Edge-Mesh: Decentralized Clinical Intelligence"
+version: 1.0.0-alpha
+doi: 10.5281/zenodo.19208247
+date-released: 2026-05-03
